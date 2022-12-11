@@ -2,6 +2,8 @@
 {
     public static class Constance
     {
+        public const string DersNotFound = "Ders Id Bilgisi boş geçilemez";
+        public const string UserAlreadyHasDers = " Kullanıcı zaten bu Derse Sahip!";
         public const string RoleAdmin = "Admin";
         public const string RoleOgrenci = "Öğrenci";
         public const string RoleOgretmen = "Öğretmen";
