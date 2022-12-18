@@ -49,8 +49,10 @@ builder.Services.AddScoped<IUserRoleRepository, EfUserRoleRepository>();
 builder.Services.AddScoped<IUserClassRepository, EfUserClassRepository>();
 builder.Services.AddScoped<IUserDersRepository, EfUserDersRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
+builder.Services.AddScoped<INoteRepository, EfNoteRepository>();
 builder.Services.AddScoped<IJwtHelper, JwtGenerator>();
 builder.Services.AddScoped<HashingHelper>();
+builder.Services.AddScoped<IDersRepository,EfDersRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

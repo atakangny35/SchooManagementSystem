@@ -6,9 +6,7 @@ namespace OkulYönetim.Entity.concrete
     {
         public int Id { get; set; }
 
-        /// <summary>
-        /// ilşki tabloları
-        /// </summary>
+        public bool IsPassed { get; set; }
         public  int UserId { get; set; }
         public User Users { get; set; }
 

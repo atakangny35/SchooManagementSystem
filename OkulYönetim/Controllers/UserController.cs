@@ -28,7 +28,8 @@ namespace OkulYönetim.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Constance.AdministratorOrUser)]
+        // [Authorize(Roles = Constance.AdministratorOrUser)]
+        [AllowAnonymous]
         public async Task<IActionResult> Add(UserAddModel userAddModel)
         {
            
@@ -49,7 +50,7 @@ namespace OkulYönetim.Controllers
                 Name = userAddModel.Name,
                 PasswordHash = Hash,
                 PasswordSalt = salt,
-                UserRoleId = userAddModel.UserRoleId,
+                UserRoleId = userAddModel.UserRoleId
                 //UserClassId = userAddModel.UserClassId
             };
             await userRepository.add(user);
@@ -70,12 +71,12 @@ namespace OkulYönetim.Controllers
                 UserClass userClass = new UserClass
                 {
                     ClassId = (int)userAddModel.ClassId,
-                    UserId = checkedUser.Id
+                    UserId = checkedUser.Id,
                 };
                 await userClassRepository.add(userClass);
             }
 
-            return Ok(Constances.Constance.AddedCompany);
+            return Ok(Constance.AddedCompany);
 
 
         }
@@ -118,7 +119,7 @@ namespace OkulYönetim.Controllers
         }
 
         [HttpPost("SetUserDers")]
-        [AllowAnonymous]
+        [Authorize(Roles = Constance.AdministratorOrUser)]
         public async Task<IActionResult> SetUserDers(UserDersSetModel model)
         {
             var result =ValidationTool.Validate(model, new UserDersSetValidator());
@@ -136,6 +137,39 @@ namespace OkulYönetim.Controllers
                 Dersid=model.DersId,                
             };
             await userDersRepository.add(userDers);
+            return Ok(Constance.AddedCompany);
+        }
+        [HttpDelete]
+        [Authorize(Roles = Constance.AdministratorOrUser)]
+        public async Task<IActionResult> DeleteUserDers(int Userid,int Dersid)
+        {
+            if (!await userDersRepository.HasUserDers(Userid, Dersid))
+            {
+                return BadRequest(Constance.UserAlreadyHasDers);
+            }
+            var USerDers = await userDersRepository.exp(x => x.Dersid == Dersid && x.Userid == Userid);
+            await userDersRepository.Delete(USerDers[0]);
+            return Ok(Constance.EntityDeleted);
+        }
+        [HttpPost("SetUserClass")]
+        [Authorize(Roles = Constance.AdministratorOrUser)]      
+        public async Task<IActionResult> SetUserClass(UserClassSetModel model)
+        {
+            var result = ValidationTool.Validate(model, new UserClassSetValidator());
+            if (result.Count > 0)
+            {
+                return BadRequest(result);
+            }
+            if (await userClassRepository.HasUserClass(model.UserId, model.ClassId))
+            {
+                return BadRequest(Constance.UserAlreadyHasClass);
+            }
+            UserClass userClass = new UserClass
+            {
+                UserId = model.UserId,
+                ClassId = model.ClassId,
+            };
+            await userClassRepository.add(userClass);
             return Ok(Constance.AddedCompany);
         }
     }

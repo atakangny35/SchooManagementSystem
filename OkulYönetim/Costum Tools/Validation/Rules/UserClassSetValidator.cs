@@ -5,14 +5,14 @@ using OkulYönetim.Entity.EntityFramework.Context;
 
 namespace OkulYönetim.Costum_Tools.Validation.Rules
 {
-    public class UserDersSetValidator : AbstractValidator<UserDersSetModel>
+    public class UserClassSetValidator: AbstractValidator<UserClassSetModel>
     {
-        public UserDersSetValidator()
+        public UserClassSetValidator()
         {
-            RuleFor(x => x.DersId).NotEmpty().WithMessage(Constance.DersNotFound);
+            RuleFor(x => x.ClassId).NotEmpty().WithMessage(Constance.ClassNotFound);
             RuleFor(x => x.UserId).NotEmpty().WithMessage("User ID Bilgisi Boş Geçilemez!");
             RuleFor(x => x.UserId).Must(userid => IsUserExists(userid)).WithMessage(Constance.UserNotFOund);
-            RuleFor(x => x.DersId).Must(DersId => IsDersExists(DersId)).WithMessage(Constance.DersNotExists);
+            RuleFor(x => x.ClassId).Must(ClassId => IsDersExists(ClassId)).WithMessage(Constance.ClassNotExists);
         }
         public bool IsUserExists(int userId)
         {
@@ -25,12 +25,12 @@ namespace OkulYönetim.Costum_Tools.Validation.Rules
 
             }
         }
-        public bool IsDersExists(int DersId)
+        public bool IsDersExists(int classid)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
 
-                var a = db.Dersler.Where(x => x.Id == DersId).Any();
+                var a = db.Classes.Where(x => x.Id == classid).Any();
                 return a;
 
 

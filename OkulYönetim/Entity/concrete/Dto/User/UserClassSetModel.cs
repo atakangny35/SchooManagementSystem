@@ -2,10 +2,10 @@
 
 namespace OkulYönetim.Entity.concrete.Dto.User
 {
-    public class UserDersSetModel:IDto
+    public class UserClassSetModel:IDto
     {
         public int UserId { get; set; }
-        //public string Email { get; set; }
-        public int DersId { get; set; }
+        public int ClassId { get; set; }
     }
 }
+
