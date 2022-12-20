@@ -13,7 +13,7 @@ namespace OkulYönetim.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class UserController : ControllerBase
     {
         private IUserRepository userRepository;
@@ -174,6 +174,30 @@ namespace OkulYönetim.Controllers
             };
             await userClassRepository.add(userClass);
             return Ok(Constance.AddedCompany);
+        }
+        [HttpPost("AddStudentFromExcel")]
+        public async Task<IActionResult> AddStudentFromExcel(IFormFile file,int ClassId)
+        {
+            if (file.Length > 0)
+            {
+                var FileName = Guid.NewGuid().ToString() + ".xlsx";
+                var FilePath = $"{Directory.GetCurrentDirectory()}/Content/{FileName}";
+
+                using (FileStream stream = System.IO.File.Create(FilePath))
+                {
+                    file.CopyTo(stream);
+                    stream.Flush();
+                }
+               ////////Excel içeri alındı Sıra Kayıtların db'ye akatarılmasında
+               ///
+               var result = await userRepository.AddFromExcel(FilePath, ClassId);
+                if (result)
+                {
+                    return Ok("Exceli içeri alındı");
+                }
+                return BadRequest("Dosya işlenirken Hata");
+            }
+            return BadRequest("Dosya Seçimi yapmadınız");
         }
     }
 }
