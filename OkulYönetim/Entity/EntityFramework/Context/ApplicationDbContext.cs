@@ -21,6 +21,8 @@ namespace OkulYönetim.Entity.EntityFramework.Context
         public DbSet<UserClass> UserClasses { get; set; }
         public DbSet<UserDers> UserDers { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Messages> Messages { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

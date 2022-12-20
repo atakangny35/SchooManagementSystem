@@ -7,6 +7,7 @@
         public const string ClassNotFound = "Class Id Bilgisi boş geçilemez";
         public const string ClassNotExists = "İlgili Sınıf Kaydı Sistemde tanımlı değil,Lütfen önce dersi sisteme kayıt ediniz!";
         public const string NoteNotFOund = "Kişiye iat bir rol bilgisi bulunamadı";
+        public const string DersNotFOundCont = "İlgili Ders Sistemde Bulunamadı";
         public const string UserAlreadyHasDers = " Kullanıcı zaten bu Derse Sahip!";
         public const string UserAlreadyHasClass = " Kullanıcı zaten bu Sınıfta Üye!";
         public const string RoleAdmin = "Admin";

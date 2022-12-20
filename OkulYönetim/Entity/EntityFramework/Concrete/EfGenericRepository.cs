@@ -32,7 +32,7 @@ namespace OkulYönetim.Entity.EntityFramework.Concrete
         public async Task<List<T>> exp(Expression<Func<T, bool>>? filter = null)
         {
             return  await (filter is not null
-                ? dbContext.Set<T>().Where(filter).ToListAsync() 
+                ? dbContext.Set<T>().AsNoTracking().Where(filter).ToListAsync() 
                 : dbContext.Set<T>().ToListAsync());
         }
 
@@ -45,7 +45,7 @@ namespace OkulYönetim.Entity.EntityFramework.Concrete
 
         public async Task<IEnumerable<T>> GetAll()
         {
-            return await dbContext.Set<T>().ToListAsync();
+            return await dbContext.Set<T>().AsNoTracking().ToListAsync();
         }
 
         public async Task Update(T entity)

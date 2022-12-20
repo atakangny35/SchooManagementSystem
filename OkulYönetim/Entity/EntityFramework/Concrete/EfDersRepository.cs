@@ -17,5 +17,14 @@ namespace OkulYönetim.Entity.EntityFramework.Concrete
         {
             return !await dbcontext.Dersler.AsNoTracking().Where(x => x.Id == dersid).AnyAsync();
         }
+
+        public async Task<int> CheckDersHasUsers(int DersId)
+        {
+            using (ApplicationDbContext dbContext= new ApplicationDbContext()) 
+            {
+                return await dbContext.UserDers.Where(i => i.Dersid == DersId).CountAsync();
+            }
+
+        }
     }
 }

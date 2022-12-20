@@ -52,9 +52,12 @@ namespace OkulYönetim.Controllers
                 PasswordSalt = salt,
                 UserRoleId = userAddModel.UserRoleId
                 //UserClassId = userAddModel.UserClassId
+
+                
             };
             await userRepository.add(user);
-            
+               
+
             var checkedUser= await userRepository.FindByMail(user.Email);
             if (userAddModel.Branch == "") { userAddModel.Branch = null; }//Daha uygun bir yol arayaacağım!!
             if (checkedUser is not null && userAddModel.Branch is null)

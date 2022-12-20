@@ -48,7 +48,7 @@ namespace OkulYönetim.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var result = await userRoleRepository.Get(id);
-            if (result is null) return BadRequest(Constances.Constance.UserRoleNotFOund);
+            if (result is null) return NotFound(Constance.UserRoleNotFOund);
             if (await userRoleRepository.CheckRoleHasUsers(id) > 0) return BadRequest(result.RoleName + " Kullanıcı tipi İçin Tanımlı kullanıcılar var silinemez");
             await userRoleRepository.Delete(result);
             return Ok(Constances.Constance.EntityDeleted);

@@ -7,6 +7,7 @@ using OkulYönetim.Utilities.JWT.Constance;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using OkulYönetim.Utilities;
+using OkulYönetim.Costum_Tools.RabbitMQ;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,9 +51,11 @@ builder.Services.AddScoped<IUserClassRepository, EfUserClassRepository>();
 builder.Services.AddScoped<IUserDersRepository, EfUserDersRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 builder.Services.AddScoped<INoteRepository, EfNoteRepository>();
+builder.Services.AddScoped<IMessagesRepository, EfMessagesRepository>();
 builder.Services.AddScoped<IJwtHelper, JwtGenerator>();
 builder.Services.AddScoped<HashingHelper>();
 builder.Services.AddScoped<IDersRepository,EfDersRepository>();
+builder.Services.AddScoped<RabbitMQRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

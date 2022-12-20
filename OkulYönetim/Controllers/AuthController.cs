@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OkulYönetim.Costum_Tools.RabbitMQ;
 using OkulYönetim.Costum_Tools.Validation;
 using OkulYönetim.Costum_Tools.Validation.Rules;
 using OkulYönetim.Entity.concrete.Dto.Login;
@@ -16,12 +17,14 @@ namespace OkulYönetim.Controllers
         private IUserRepository userRepository;
         private IJwtHelper jwtHelper;
         private IUserRoleRepository userRole;
+        private RabbitMQRepository RabbitMQRepository;
 
-        public AuthController(IUserRepository _userRepository, IJwtHelper _jwtHelper, IUserRoleRepository userRole)
+        public AuthController(IUserRepository _userRepository, IJwtHelper _jwtHelper, IUserRoleRepository userRole, RabbitMQRepository rabbitMQRepository)
         {
             userRepository = _userRepository;
             jwtHelper = _jwtHelper;
             this.userRole = userRole;
+            RabbitMQRepository = rabbitMQRepository;
         }
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginModelController model)
@@ -53,5 +56,7 @@ namespace OkulYönetim.Controllers
             }
             return Unauthorized("Email  veya şifre yanlış");
         }
+
+       
     }
 }
