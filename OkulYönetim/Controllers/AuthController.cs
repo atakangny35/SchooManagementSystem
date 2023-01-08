@@ -48,7 +48,7 @@ namespace OkulYönetim.Controllers
                         Role = Role.RoleName,
                         Id = User.Id
                     };
-                    var token = jwtHelper.GenerateJwtToken(userlogin);
+                    var token = await jwtHelper.GenerateJwtToken(userlogin);
 
                     return Ok(token);
                 }
@@ -56,6 +56,7 @@ namespace OkulYönetim.Controllers
             }
             return Unauthorized("Email  veya şifre yanlış");
         }
+        
 
        
     }

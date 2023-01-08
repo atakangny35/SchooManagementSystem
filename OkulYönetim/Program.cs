@@ -52,6 +52,7 @@ builder.Services.AddScoped<IUserDersRepository, EfUserDersRepository>();
 builder.Services.AddScoped<IUserRepository, EfUserRepository>();
 builder.Services.AddScoped<INoteRepository, EfNoteRepository>();
 builder.Services.AddScoped<IMessagesRepository, EfMessagesRepository>();
+builder.Services.AddScoped<IClassepository, EfClassRepository>();
 builder.Services.AddScoped<IJwtHelper, JwtGenerator>();
 builder.Services.AddScoped<HashingHelper>();
 builder.Services.AddScoped<IDersRepository,EfDersRepository>();

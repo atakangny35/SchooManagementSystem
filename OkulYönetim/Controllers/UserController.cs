@@ -19,12 +19,14 @@ namespace OkulYönetim.Controllers
         private IUserRepository userRepository;
         private IUserClassRepository userClassRepository;
         private IUserDersRepository userDersRepository;
+        private IClassepository classepository;
 
-        public UserController(IUserRepository _userRepository, IUserClassRepository userClassRepository, IUserDersRepository userDersRepository)
+        public UserController(IUserRepository _userRepository, IUserClassRepository userClassRepository, IUserDersRepository userDersRepository, IClassepository classepository)
         {
             userRepository = _userRepository;
             this.userClassRepository = userClassRepository;
             this.userDersRepository = userDersRepository;
+            this.classepository = classepository;
         }
 
         [HttpPost]
@@ -199,5 +201,12 @@ namespace OkulYönetim.Controllers
             }
             return BadRequest("Dosya Seçimi yapmadınız");
         }
+        [HttpGet("GetStudentsByClasses")]
+        public async Task<IActionResult> GetStudentsByClasses(int userid)
+        {
+           return Ok( await classepository.GetUsersByClasses(userid));
+        }     
+        
+       
     }
 }

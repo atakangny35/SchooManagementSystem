@@ -5,6 +5,6 @@ namespace OkulYönetim.Utilities.JWT.Abstract
 {
     public interface IJwtHelper
     {
-        Token GenerateJwtToken(UserLoginModel model);
+        Task<Token> GenerateJwtToken(UserLoginModel model);
     }
 }

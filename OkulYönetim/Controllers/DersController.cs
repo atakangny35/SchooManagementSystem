@@ -24,7 +24,7 @@ namespace OkulYönetim.Controllers
 
 
         [HttpPost]
-       // [Authorize(Roles = Constance.AdministratorOrUser)]
+        [Authorize(Roles = Constance.AdministratorOrUser)]
         public async Task<IActionResult> Add( string DersAdi)
         {
             if (DersAdi == null) return BadRequest("Parametlre gönderilmedi");
