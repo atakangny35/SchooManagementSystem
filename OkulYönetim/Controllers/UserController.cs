@@ -8,12 +8,13 @@ using OkulYönetim.Entity.concrete;
 using OkulYönetim.Entity.concrete.Dto.User;
 using OkulYönetim.Entity.EntityFramework.interfaces;
 using OkulYönetim.Utilities;
+using OkulYönetim.Utilities.Result.Concrete;
 
 namespace OkulYönetim.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private IUserRepository userRepository;
@@ -39,6 +40,7 @@ namespace OkulYönetim.Controllers
             var result = ValidationTool.Validate(userAddModel, new UserAddValidator());
             if (result.Count > 0)
             {
+                //return BadRequest(new ErrorResult(result));
                 return BadRequest(result);
             }
             HashingHelper.CreatePasswordHash(userAddModel.Password, out byte[] salt, out byte[] Hash);
@@ -81,7 +83,8 @@ namespace OkulYönetim.Controllers
                 await userClassRepository.add(userClass);
             }
 
-            return Ok(Constance.AddedCompany);
+       
+            return Ok(new SuccessResult(Constance.AddedCompany));
 
 
         }
@@ -90,7 +93,7 @@ namespace OkulYönetim.Controllers
         public async Task<IActionResult> Get(string userMail)
         {  
           var result=await userRepository.FindByMailWithRoleName(userMail);
-          return result is not null ? Ok(result) : BadRequest(Constance.UserNotFOund);
+          return result is not null ? Ok(result) : BadRequest(new ErrorResult(Constance.UserNotFOund));
         }
 
         [HttpPut]
@@ -167,7 +170,9 @@ namespace OkulYönetim.Controllers
             }
             if (await userClassRepository.HasUserClass(model.UserId, model.ClassId))
             {
-                return BadRequest(Constance.UserAlreadyHasClass);
+               //return BadRequest(Constance.UserAlreadyHasClass);
+                return BadRequest(new ErrorResult(Constance.UserAlreadyHasClass));
+
             }
             UserClass userClass = new UserClass
             {
@@ -175,7 +180,7 @@ namespace OkulYönetim.Controllers
                 ClassId = model.ClassId,
             };
             await userClassRepository.add(userClass);
-            return Ok(Constance.AddedCompany);
+            return Ok(new SuccessResult(Constance.AddedCompany));
         }
         [HttpPost("AddStudentFromExcel")]
         public async Task<IActionResult> AddStudentFromExcel(IFormFile file,int ClassId)
@@ -195,11 +200,14 @@ namespace OkulYönetim.Controllers
                var result = await userRepository.AddFromExcel(FilePath, ClassId);
                 if (result)
                 {
-                    return Ok("Exceli içeri alındı");
+                    //return Ok("Exceli içeri alındı");
+                    return Ok(new SuccessResult("Exceli içeri alındı"));
                 }
-                return BadRequest("Dosya işlenirken Hata");
+                //return BadRequest("Dosya işlenirken Hata");
+                return BadRequest(new ErrorResult("Dosya işlenirken Hata"));
             }
-            return BadRequest("Dosya Seçimi yapmadınız");
+            //return BadRequest("Dosya Seçimi yapmadınız");
+            return BadRequest(new ErrorResult("Dosya Seçimi yapmadınız"));
         }
         [HttpGet("GetStudentsByClasses")]
         public async Task<IActionResult> GetStudentsByClasses(int userid)
