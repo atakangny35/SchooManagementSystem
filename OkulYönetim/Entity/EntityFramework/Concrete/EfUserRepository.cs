@@ -112,5 +112,42 @@ namespace OkulYönetim.Entity.EntityFramework.Concrete
             System.IO.File.Delete(FilePath);
             return true;
         }
+
+        public async Task<UserDetailModel> GetUserDetailModel(int id)
+        {
+            var result = await (from u in dbContext.Users.AsNoTracking()
+                                join uc in dbContext.UserClasses.AsNoTracking()
+                                on u.Id equals uc.UserId
+                                join c in dbContext.Classes.AsNoTracking()
+                                on uc.ClassId equals c.Id
+                                where u.Id == id
+                                select new UserDetailModel
+                                {
+                                    Surname = u.Surname,
+                                    ClassName = c.Name,
+                                    Email = u.Email,
+                                    Name = u.Name
+                                }).FirstOrDefaultAsync();
+            result.DersCount = dbContext.UserDers.Count(x=>x.Userid==id);
+            result.DersName = await (from ud in dbContext.UserDers.AsNoTracking()
+                                     join d in dbContext.Dersler.AsNoTracking()
+                                     on ud.Dersid equals d.Id
+                                     where ud.Userid == id
+                                     select d.DersAdi
+                                ).ToListAsync();
+
+            return result;
+        }
+        public bool IsUserExists(int userId)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+
+                var a = db.Users.Where(x => x.Id == userId).Any();
+                return a;
+
+
+            }
+        }
     }
 }

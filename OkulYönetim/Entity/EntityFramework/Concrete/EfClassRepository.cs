@@ -38,10 +38,11 @@ namespace OkulYönetim.Entity.EntityFramework.Concrete
                             UserName = u.Name,
                            // ClassId= item.ClassId
                         };
-
+                var name = await dbcontext.Classes.Where(x => x.Id == item.ClassId).FirstOrDefaultAsync();
                 ListOfUserListModel listOfUserListModel = new ListOfUserListModel
                 {
-                    ClassId = item.ClassId,
+                    ClassId =item.ClassId,
+                    ClassName=name.Name,
                     userList = await a.ToListAsync()
 
                 };

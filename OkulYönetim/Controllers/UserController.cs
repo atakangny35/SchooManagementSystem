@@ -213,8 +213,16 @@ namespace OkulYönetim.Controllers
         public async Task<IActionResult> GetStudentsByClasses(int userid)
         {
            return Ok( await classepository.GetUsersByClasses(userid));
-        }     
-        
+        }
+
+        [AllowAnonymous]
+        [HttpGet("getuserinfo")]
+        public async Task<IActionResult> GetUserInformation(int id)
+        { 
+             
+           return userRepository.IsUserExists(id)? 
+                Ok( await userRepository.GetUserDetailModel(id)): BadRequest(new ErrorResult(Constance.UserNotFOund));
+        }
        
     }
 }
